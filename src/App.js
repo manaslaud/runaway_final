@@ -38,12 +38,9 @@
 
     useEffect(() => {
       const delayedinterval = (callback, delay) => {
-        setTimeout(()=>{
-          callback();
-    
-          setInterval(callback, delay);
-        }, delay);
-      }
+        const intervalID = setInterval(callback, delay)
+        return intervalID;
+        };
 
       const moveLPU = enemies.map((enemy) => {
         if(enemy.type === "LPU"){
@@ -52,7 +49,6 @@
             enemy.speed = -enemy.speed;
             newX = enemy.x + enemy.speed;
           }
-
           return {...enemy, x:newX};
           
         }
@@ -79,40 +75,39 @@
         return enemy;
       })
 
-      // const moveIIT = enemies.map((enemy, fixedx, fixedy) =>setInterval( ()=>{
-        
-      //   if(enemy.type ==="IIT"){
-      //     const updatedEnemy = {...enemy};
-      //     if(enemy.y > fixedy){ 
-      //       updatedEnemy.y = enemy.y - enemy.speed;
-      //     }
-      //     else{
-      //       updatedEnemy.y = fixedy + enemy.speed;
-      //     }
-      //     if(enemy.x > playerPosition.x){
-      //       updatedEnemy.x = fixedx - enemy.speed;
-      //     }
-      //     else{
-      //       updatedEnemy.x = fixedx + enemy.speed;
-      //     }
-      //     return updatedEnemy;
-      //   }
-      // },5000));
+      const moveIIT = () => {
+        setEnemies((prevEnemies) =>
+          prevEnemies.map((enemy) => {
+            if (enemy.type === "IIT") {
+              const updatedEnemy = { ...enemy };
+              if (enemy.y > playerPosition.y) {
+                updatedEnemy.y = enemy.y - enemy.speed;
+              } else {
+                updatedEnemy.y = enemy.y + enemy.speed;
+              }
+              if (enemy.x > playerPosition.x) {
+                updatedEnemy.x = enemy.x - enemy.speed;
+              } else {
+                updatedEnemy.x = enemy.x + enemy.speed;
+              }
+              return updatedEnemy;
+            }
+            return enemy;
+          })
+        );
+      };
       setEnemies(moveLPU);
       setEnemies(moveNIT);
-      //setEnemies(moveIIT);
-      //delayedinterval(moveIIT, 1000);
+      delayedinterval(moveIIT, 5000);
 
     }, [playerPosition, enemies]);
-
+    
     useEffect(() => {
       // Spawn enemies with different movement patterns
       const delayedinterval = (callback, delay) => {
-        setTimeout(()=>{
-          callback();
-    
-          setInterval(callback, delay);
-        }, delay);
+        const intervalid = setInterval(callback, delay);
+        return intervalid;
+        
       }
       const spawnEnemyLPU = () => {
         // Randomly generate enemy properties (type, movement pattern, etc.)
