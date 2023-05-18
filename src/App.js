@@ -11,23 +11,27 @@
       const handleKeyPress = (event) => {
         const { keyCode } = event;
         const newPosition = { ...playerPosition };
+        
+        
+        for(let i = 0; i < 5; i++){
+          if (keyCode === 37) { 
+            // Left arrow key
+            newPosition.x -= 1;
+          } else if (keyCode === 39) {
+            // Right arrow key
+            newPosition.x += 1;
+          } else if (keyCode === 38) {
+            // Up arrow key
+            newPosition.y -= 1;
+          } else if (keyCode === 40) {
+            // Down arrow key
+            newPosition.y += 1;
+          }
 
-        if (keyCode === 37) { 
-          // Left arrow key
-          newPosition.x -= 5;
-        } else if (keyCode === 39) {
-          // Right arrow key
-          newPosition.x += 5;
-        } else if (keyCode === 38) {
-          // Up arrow key
-          newPosition.y -= 5;
-        } else if (keyCode === 40) {
-          // Down arrow key
-          newPosition.y += 5;
-        }
-
-        setPlayerPosition(newPosition);
+          setPlayerPosition(newPosition);
       };
+    }
+      
 
       window.addEventListener("keydown", handleKeyPress);
 
@@ -37,44 +41,38 @@
     }, [playerPosition]);
 
     useEffect(() => {
-      const delayedinterval = (callback, delay) => {
-        const intervalID = setInterval(callback, delay)
-        return intervalID;
-        };
-
-      const moveLPU = enemies.map((enemy) => {
-        if(enemy.type === "LPU"){
-          let newX = enemy.x + enemy.speed;
-          if(newX > 1000){
-            enemy.speed = -enemy.speed;
-            newX = enemy.x + enemy.speed;
+      const moveNITandLPU = enemies.map((enemy) => {
+        if (enemy.type === "LPU") {
+          const updatedenemy = {...enemy};
+          updatedenemy.x = updatedenemy.x + updatedenemy.speed;
+          if (updatedenemy.x > 1000) {
+            updatedenemy.speed = -updatedenemy.speed;
+            updatedenemy.x = updatedenemy.x + updatedenemy.speed;
           }
-          return {...enemy, x:newX};
-          
+          return updatedenemy
         }
-        return enemy;
-      })
-      const moveNIT = enemies.map((enemy) => {
-        if(enemy.type === "NIT"){
-          const updatedEnemy = {...enemy};
-          if(enemy.y > playerPosition.y){ 
+        if (enemy.type === "NIT") {
+          const updatedEnemy = { ...enemy };
+          if (enemy.y > playerPosition.y) {
             updatedEnemy.y = enemy.y - enemy.speed;
-          }
-          else{
+          } else {
             updatedEnemy.y = enemy.y + enemy.speed;
           }
-          if(enemy.x > playerPosition.x){
+          if (enemy.x > playerPosition.x) {
             updatedEnemy.x = enemy.x - enemy.speed;
-          }
-          else{
+          } else {
             updatedEnemy.x = enemy.x + enemy.speed;
           }
           return updatedEnemy;
-          
         }
         return enemy;
-      })
-
+      });
+    
+      setEnemies(moveNITandLPU);
+    }, [enemies, playerPosition]);
+    let counter = 0;
+    useEffect(() => {
+      counter = counter + 1
       const moveIIT = () => {
         setEnemies((prevEnemies) =>
           prevEnemies.map((enemy) => {
@@ -96,30 +94,34 @@
           })
         );
       };
-      setEnemies(moveLPU);
-      setEnemies(moveNIT);
-      delayedinterval(moveIIT, 5000);
+      const moveIITInterval = null;
+      if(counter > 5000){
+        const moveIITInterval = setInterval(moveIIT, 5000);
+        if(counter > 10000){
+          counter = 0;
+        }
+      }
 
+      return () => {
+        clearInterval(moveIITInterval);
+      };
     }, [playerPosition, enemies]);
-    
+
     useEffect(() => {
-      // Spawn enemies with different movement patterns
       const delayedinterval = (callback, delay) => {
         const intervalid = setInterval(callback, delay);
         return intervalid;
         
       }
       const spawnEnemyLPU = () => {
-        // Randomly generate enemy properties (type, movement pattern, etc.)
-        const enemy = { type: "LPU", x: Math.random() * 500, y: Math.random() * 500, speed:12 };
+        const enemy = { type: "LPU", x: Math.random() * 500, y: Math.random() * 500, speed:0.010 };
               
-        // Add the enemy to the list of enemies
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       };
       const spawnEnemyNIT = () => {
 
-        const enemy = {type : "NIT", x: Math.random() * 500, y: Math.random() * 500, speed:8 }
+        const enemy = {type : "NIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.005 }
 
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
@@ -143,12 +145,11 @@
     }, []);
 
     useEffect(() => {
-      // Check collision with enemies
       const checkCollision = () => {
         for (const enemy of enemies) {
           if (
-            playerPosition.x === enemy.x &&
-            playerPosition.y === enemy.y
+            playerPosition.x+10 > enemy.x && playerPosition.x-10 < enemy.x &&
+            playerPosition.y +10 > enemy.y && playerPosition.y-10 < enemy.y
           ) {
             setGameOver(true);
             break;
@@ -160,7 +161,6 @@
     }, [playerPosition, enemies]);
 
     useEffect(() => {
-      // Update score as time goes on
       const scoreInterval = setInterval(() => {
         setScore((prevScore) => prevScore + 1);
       }, 1000);
@@ -190,8 +190,8 @@
         <div
           style={{
             position: "relative",
-            width: "1000px",
-            height: "1000px",
+            width: "1300px",
+            height: "600px",
             border: "1px solid black",
           }}
         >
