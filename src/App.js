@@ -2,50 +2,106 @@
 
   const Game = () => {
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
+    const [targetPosition, setTargetPosition] = useState({ x: 250, y: 250 });
+    const [velocity, setVelocity] = useState({ x: 0, y: 0 });
+    const [isKeyDown, setIsKeyDown] = useState({
+      left: false,
+      right: false,
+      up: false,
+      down: false,
+    });
+
     const [enemies, setEnemies] = useState([]);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
 
+
+    const handleKeyPress = (event) => {
+      const { keyCode } = event;
+  
+      setIsKeyDown((prevState) => ({
+        ...prevState,
+        left: keyCode === 37,
+        right: keyCode === 39,
+        up: keyCode === 38,
+        down: keyCode === 40,
+      }));
+    };
+  
+    const handleKeyUp = (event) => {
+      const { keyCode } = event;
+  
+      setIsKeyDown((prevState) => ({
+        ...prevState,
+        left: keyCode !== 37 ? prevState.left : false,
+        right: keyCode !== 39 ? prevState.right : false,
+        up: keyCode !== 38 ? prevState.up : false,
+        down: keyCode !== 40 ? prevState.down : false,
+      }));
+    };
+  
     useEffect(() => {
-      // Handle player movement with arrow keys
-      const handleKeyPress = (event) => {
-        const { keyCode } = event;
-        const newPosition = { ...playerPosition };
-        
-        
-        for(let i = 0; i < 5; i++){
-          if (keyCode === 37) { 
-            // Left arrow key
-            newPosition.x -= 1;
-          } else if (keyCode === 39) {
-            // Right arrow key
-            newPosition.x += 1;
-          } else if (keyCode === 38) {
-            // Up arrow key
-            newPosition.y -= 1;
-          } else if (keyCode === 40) {
-            // Down arrow key
-            newPosition.y += 1;
-          }
-
-          setPlayerPosition(newPosition);
-      };
-    }
-      
-
       window.addEventListener("keydown", handleKeyPress);
-
+      window.addEventListener("keyup", handleKeyUp);
+  
       return () => {
         window.removeEventListener("keydown", handleKeyPress);
+        window.removeEventListener("keyup", handleKeyUp);
       };
-    }, [playerPosition]);
-
+    }, []);
+  
+    useEffect(() => {
+      const movePlayer = () => {
+        const { x: targetX, y: targetY } = targetPosition;
+        const { x: currentX, y: currentY } = playerPosition;
+  
+        const acceleration = 0.1; // Adjust this value for desired acceleration
+        const friction = 0.9; // Adjust this value for desired friction
+  
+        const deltaX = targetX - currentX;
+        const deltaY = targetY - currentY;
+  
+        let newVelocity = { x: velocity.x, y: velocity.y };
+  
+        if (isKeyDown.left && !isKeyDown.right) {
+          newVelocity.x -= acceleration;
+        } else if (isKeyDown.right && !isKeyDown.left) {
+          newVelocity.x += acceleration;
+        } else {
+          newVelocity.x *= friction;
+        }
+  
+        if (isKeyDown.up && !isKeyDown.down) {
+          newVelocity.y -= acceleration;
+        } else if (isKeyDown.down && !isKeyDown.up) {
+          newVelocity.y += acceleration;
+        } else {
+          newVelocity.y *= friction;
+        }
+  
+        const newX = currentX + newVelocity.x;
+        const newY = currentY + newVelocity.y;
+  
+        setVelocity(newVelocity);
+        setPlayerPosition({ x: newX, y: newY });
+      };
+  
+      const movePlayerInterval = setInterval(movePlayer, 16); // Adjust the interval for desired smoothness
+  
+      return () => {
+        clearInterval(movePlayerInterval);
+      };
+    }, [playerPosition, targetPosition, velocity, isKeyDown]);
     useEffect(() => {
       const moveNITandLPU = enemies.map((enemy) => {
         if (enemy.type === "LPU") {
           const updatedenemy = {...enemy};
           updatedenemy.x = updatedenemy.x + updatedenemy.speed;
-          if (updatedenemy.x > 1000) {
+          if (updatedenemy.x > 600) {
+            updatedenemy.speed = -updatedenemy.speed;
+            updatedenemy.x = updatedenemy.x + updatedenemy.speed;
+          }
+          if(updatedenemy.x < 0){
             updatedenemy.speed = -updatedenemy.speed;
             updatedenemy.x = updatedenemy.x + updatedenemy.speed;
           }
@@ -135,8 +191,8 @@
       }
 
       const spawnInterval = setInterval(spawnEnemyLPU, 2000);
-      const delayedinterval1 = delayedinterval(spawnEnemyNIT, 5000);
-      const delayedinterval2 = delayedinterval(spawnEnemyIIT, 10000);
+      const delayedinterval1 = delayedinterval(spawnEnemyNIT, 2000);
+      const delayedinterval2 = delayedinterval(spawnEnemyIIT, 5000);
       return () => {
         clearInterval(spawnInterval);
         clearInterval(delayedinterval1);
@@ -190,7 +246,7 @@
         <div
           style={{
             position: "relative",
-            width: "1300px",
+            width: "600px",
             height: "600px",
             border: "1px solid black",
           }}
