@@ -1,97 +1,55 @@
-  import React, { useState, useEffect } from "react";
+  import React, { useState, useEffect, useRef } from "react";
 
   const Game = () => {
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
     const [targetPosition, setTargetPosition] = useState({ x: 250, y: 250 });
     const [velocity, setVelocity] = useState({ x: 0, y: 0 });
-    const [isKeyDown, setIsKeyDown] = useState({
-      left: false,
-      right: false,
-      up: false,
-      down: false,
-    });
-
     const [enemies, setEnemies] = useState([]);
     const [score, setScore] = useState(0);
+    const targetPositionRef = useRef({ x: 250, y: 250})
     const [gameOver, setGameOver] = useState(false);
 
-
-    const handleKeyPress = (event) => {
-      const { keyCode } = event;
-  
-      setIsKeyDown((prevState) => ({
-        ...prevState,
-        left: keyCode === 37,
-        right: keyCode === 39,
-        up: keyCode === 38,
-        down: keyCode === 40,
-      }));
-    };
-  
-    const handleKeyUp = (event) => {
-      const { keyCode } = event;
-  
-      setIsKeyDown((prevState) => ({
-        ...prevState,
-        left: keyCode !== 37 ? prevState.left : false,
-        right: keyCode !== 39 ? prevState.right : false,
-        up: keyCode !== 38 ? prevState.up : false,
-        down: keyCode !== 40 ? prevState.down : false,
-      }));
+    const handleMouseMove = (event) => {
+      const { clientX, clientY } = event;
+      targetPositionRef.current = { x: clientX, y: clientY };
     };
   
     useEffect(() => {
-      window.addEventListener("keydown", handleKeyPress);
-      window.addEventListener("keyup", handleKeyUp);
+      window.addEventListener("mousemove", handleMouseMove);
   
       return () => {
-        window.removeEventListener("keydown", handleKeyPress);
-        window.removeEventListener("keyup", handleKeyUp);
+        window.removeEventListener("mousemove", handleMouseMove);
       };
     }, []);
   
     useEffect(() => {
-      const movePlayer = () => {
-        const { x: targetX, y: targetY } = targetPosition;
+      const movePlayerInterval = setInterval(() => {
+        const { x: targetX, y: targetY } = targetPositionRef.current;
         const { x: currentX, y: currentY } = playerPosition;
   
-        const acceleration = 0.1; // Adjust this value for desired acceleration
-        const friction = 0.9; // Adjust this value for desired friction
+        // Calculate the direction vector towards the target
+        const directionX = targetX - currentX;
+        const directionY = targetY - currentY;
+        const distance = Math.sqrt(directionX ** 2 + directionY ** 2);
   
-        const deltaX = targetX - currentX;
-        const deltaY = targetY - currentY;
+        // Set a constant velocity magnitude
+        const speed = 5;
   
-        let newVelocity = { x: velocity.x, y: velocity.y };
+        // Calculate the velocity components
+        const velocityX = (directionX / distance) * speed;
+        const velocityY = (directionY / distance) * speed;
   
-        if (isKeyDown.left && !isKeyDown.right) {
-          newVelocity.x -= acceleration;
-        } else if (isKeyDown.right && !isKeyDown.left) {
-          newVelocity.x += acceleration;
-        } else {
-          newVelocity.x *= friction;
-        }
-  
-        if (isKeyDown.up && !isKeyDown.down) {
-          newVelocity.y -= acceleration;
-        } else if (isKeyDown.down && !isKeyDown.up) {
-          newVelocity.y += acceleration;
-        } else {
-          newVelocity.y *= friction;
-        }
-  
-        const newX = currentX + newVelocity.x;
-        const newY = currentY + newVelocity.y;
-  
-        setVelocity(newVelocity);
+        // Update the player position
+        const newX = currentX + velocityX;
+        const newY = currentY + velocityY;
         setPlayerPosition({ x: newX, y: newY });
-      };
-  
-      const movePlayerInterval = setInterval(movePlayer, 16); // Adjust the interval for desired smoothness
+      }, 16);
   
       return () => {
         clearInterval(movePlayerInterval);
       };
-    }, [playerPosition, targetPosition, velocity, isKeyDown]);
+    }, [playerPosition]);
+
     useEffect(() => {
       const moveNITandLPU = enemies.map((enemy) => {
         if (enemy.type === "LPU") {
@@ -129,17 +87,17 @@
     let counter = 0;
     useEffect(() => {
       counter = counter + 1
-      const moveIIT = () => {
+      const moveIIT = (lastx, lasty) => {
         setEnemies((prevEnemies) =>
           prevEnemies.map((enemy) => {
             if (enemy.type === "IIT") {
               const updatedEnemy = { ...enemy };
-              if (enemy.y > playerPosition.y) {
+              if (enemy.y > lasty) {
                 updatedEnemy.y = enemy.y - enemy.speed;
               } else {
                 updatedEnemy.y = enemy.y + enemy.speed;
               }
-              if (enemy.x > playerPosition.x) {
+              if (enemy.x > lastx) {
                 updatedEnemy.x = enemy.x - enemy.speed;
               } else {
                 updatedEnemy.x = enemy.x + enemy.speed;
@@ -150,16 +108,19 @@
           })
         );
       };
-      const moveIITInterval = null;
+      counter = counter + 1;
       if(counter > 5000){
-        const moveIITInterval = setInterval(moveIIT, 5000);
+        moveIIT(lastx, lasty);
         if(counter > 10000){
           counter = 0;
         }
       }
+      else{
+        var lastx = playerPosition.x;
+        var lasty = playerPosition.y;
+      }
 
       return () => {
-        clearInterval(moveIITInterval);
       };
     }, [playerPosition, enemies]);
 
