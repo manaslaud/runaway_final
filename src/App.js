@@ -8,22 +8,12 @@
     const [score, setScore] = useState(0);
     const targetPositionRef = useRef({ x: 250, y: 250})
     const [gameOver, setGameOver] = useState(false);
-
-    const handleMouseMove = (event) => {
-      const { clientX, clientY } = event;
-      targetPositionRef.current = { x: clientX, y: clientY };
-    };
   
-    useEffect(() => {
-      window.addEventListener("mousemove", handleMouseMove);
-  
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-      };
-    }, []);
-  
-    useEffect(() => {
-      const movePlayerInterval = setInterval(() => {
+    useEffect(() => {                
+      const handleMouseMove = (event) => {
+        const { clientX, clientY } = event;
+        targetPositionRef.current = { x: clientX, y: clientY };
+      
         const { x: targetX, y: targetY } = targetPositionRef.current;
         const { x: currentX, y: currentY } = playerPosition;
   
@@ -33,7 +23,7 @@
         const distance = Math.sqrt(directionX ** 2 + directionY ** 2);
   
         // Set a constant velocity magnitude
-        const speed = 5;
+        const speed = 1;
   
         // Calculate the velocity components
         const velocityX = (directionX / distance) * speed;
@@ -43,12 +33,17 @@
         const newX = currentX + velocityX;
         const newY = currentY + velocityY;
         setPlayerPosition({ x: newX, y: newY });
-      }, 16);
-  
-      return () => {
-        clearInterval(movePlayerInterval);
       };
+
+      window.addEventListener("mousemove", handleMouseMove);
+      
+      return () => {
+        //clearInterval(movePlayerInterval);
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+  
     }, [playerPosition]);
+  
 
     useEffect(() => {
       const moveNITandLPU = enemies.map((enemy) => {
