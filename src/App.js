@@ -2,14 +2,16 @@
 
   const Game = () => {
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
-    const [targetPosition, setTargetPosition] = useState({ x: 250, y: 250 });
-    const [velocity, setVelocity] = useState({ x: 0, y: 0 });
     const [enemies, setEnemies] = useState([]);
     const [score, setScore] = useState(0);
     const targetPositionRef = useRef({ x: 250, y: 250})
+    const counter = useRef(0);
     const [gameOver, setGameOver] = useState(false);
+    const [lastx, setLastx] = useState(0);
+    const [lasty, setLasty] = useState(0);
   
-    useEffect(() => {                
+    useEffect(() => {   
+                
       const handleMouseMove = (event) => {
         const { clientX, clientY } = event;
         targetPositionRef.current = { x: clientX, y: clientY };
@@ -23,28 +25,42 @@
         const distance = Math.sqrt(directionX ** 2 + directionY ** 2);
   
         // Set a constant velocity magnitude
-        const speed = 1;
+        const speed = 3;
   
         // Calculate the velocity components
         const velocityX = (directionX / distance) * speed;
         const velocityY = (directionY / distance) * speed;
-  
-        // Update the player position
-        const newX = currentX + velocityX;
-        const newY = currentY + velocityY;
+
+        
+        var newX = currentX +velocityX ;
+        var newY = currentY + velocityY;
+
+        
+        if(newX > 600){
+          newX = 600;
+        }
+        if(newX < 0){
+          newX = 0;
+        }
+        if(newY > 600){
+          newY = 600;
+        }
+        if(newY < 0){
+          newY = 0;
+        }
         setPlayerPosition({ x: newX, y: newY });
       };
 
-      window.addEventListener("mousemove", handleMouseMove);
       
+      window.addEventListener("mousemove", handleMouseMove);
+      // console.log("testing")
       return () => {
         //clearInterval(movePlayerInterval);
         window.removeEventListener("mousemove", handleMouseMove);
       };
   
-    }, [playerPosition]);
+    }, [playerPosition, enemies]);
   
-
     useEffect(() => {
       const moveNITandLPU = enemies.map((enemy) => {
         if (enemy.type === "LPU") {
@@ -79,45 +95,48 @@
     
       setEnemies(moveNITandLPU);
     }, [enemies, playerPosition]);
-    let counter = 0;
+
+
     useEffect(() => {
-      counter = counter + 1
-      const moveIIT = (lastx, lasty) => {
+      const moveIIT = () => {
         setEnemies((prevEnemies) =>
           prevEnemies.map((enemy) => {
             if (enemy.type === "IIT") {
               const updatedEnemy = { ...enemy };
-              if (enemy.y > lasty) {
-                updatedEnemy.y = enemy.y - enemy.speed;
-              } else {
-                updatedEnemy.y = enemy.y + enemy.speed;
-              }
-              if (enemy.x > lastx) {
-                updatedEnemy.x = enemy.x - enemy.speed;
-              } else {
-                updatedEnemy.x = enemy.x + enemy.speed;
-              }
+              const directionX = lastx - updatedEnemy.x;
+              const directionY = lasty - updatedEnemy.y;
+              const distance = Math.sqrt(directionX ** 2 + directionY ** 2);
+        
+              // Set a constant velocity magnitude        
+              // Calculate the velocity components
+              const velocityX = (directionX / distance) * updatedEnemy.speed;
+              const velocityY = (directionY / distance) * updatedEnemy.speed;
+        
+              // Update the player position
+              updatedEnemy.x = updatedEnemy.x + velocityX;
+              updatedEnemy.y = updatedEnemy.y + velocityY;
               return updatedEnemy;
             }
             return enemy;
           })
         );
       };
-      counter = counter + 1;
-      if(counter > 5000){
-        moveIIT(lastx, lasty);
-        if(counter > 10000){
-          counter = 0;
+      counter.current = counter.current + 1;
+      if(counter.current > 100000){
+        moveIIT();
+        if(counter.current > 800000){
+          counter.current = 0;
         }
       }
       else{
-        var lastx = playerPosition.x;
-        var lasty = playerPosition.y;
+        setLastx(playerPosition.x);
+        setLasty(playerPosition.y);
       }
 
       return () => {
+        clearInterval(moveIIT);
       };
-    }, [playerPosition, enemies]);
+    }, [playerPosition, enemies, lastx, lasty]);
 
     useEffect(() => {
       const delayedinterval = (callback, delay) => {
@@ -140,7 +159,7 @@
       }
       const spawnEnemyIIT = () => {
           
-          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:40 }
+          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.009 }
     
           setEnemies((prevEnemies) => [...prevEnemies, enemy]);
           return enemy;
