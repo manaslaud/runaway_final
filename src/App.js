@@ -49,7 +49,6 @@
 
       
       window.addEventListener("mousemove", handleMouseMove);
-      // console.log("testing")
       return () => {
         //clearInterval(movePlayerInterval);
         window.removeEventListener("mousemove", handleMouseMove);
