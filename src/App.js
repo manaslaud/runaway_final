@@ -1,10 +1,9 @@
-  import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
   const Game = () => {
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
     const [enemies, setEnemies] = useState([]);
     const [score, setScore] = useState(0);
-    const targetPositionRef = useRef({ x: 250, y: 250})
     const counter = useRef(0);
     const [gameOver, setGameOver] = useState(false);
     const [lastx, setLastx] = useState(0);
@@ -12,41 +11,22 @@
   
     useEffect(() => {
       const handleMouseMove = (event) => {
-        const { clientX, clientY } = event;
-        targetPositionRef.current = { x: clientX, y: clientY };
-      
-        const { x: targetX, y: targetY } = targetPositionRef.current;
-        const { x: currentX, y: currentY } = playerPosition;
-  
-        // Calculate the direction vector towards the target
-        const directionX = targetX - currentX;
-        const directionY = targetY - currentY;
-        const distance = Math.sqrt(directionX ** 2 + directionY ** 2);
-        // Set a constant velocity magnitude
-        const speed = 3;
-        // Calculate the velocity components
-        const velocityX = (directionX / distance) * speed;
-        const velocityY = (directionY / distance) * speed;
-        console.log(velocityX, velocityY, currentX, currentY)
-        
-        var newX = currentX + velocityX ;
-        var newY = currentY + velocityY;
+        let { clientX, clientY } = event;
 
-        if(newX > 600){
-          newX = 600;
+        if(clientX > 600){
+          clientX = 600;
         }
-        if(newX < 0){
-          newX = 0;
+        if(clientX < 0){
+          clientX = 0;
         }
-        if(newY > 600){
-          newY = 600;
+        if(clientY > 600){
+          clientY = 600;
         }
-        if(newY < 0){
-          newY = 0;
+        if(clientY < 0){
+          clientY = 0;
         }
-        setPlayerPosition({ x: newX, y: newY });
+        setPlayerPosition({ x: clientX, y: clientY });
       };
-
       
       window.addEventListener("mousemove", handleMouseMove);
       return () => {
@@ -54,7 +34,7 @@
         window.removeEventListener("mousemove", handleMouseMove);
       };
   
-    }, [playerPosition]);
+    }, []);
   
     useEffect(() => {
       const moveNITandLPU = enemies.map((enemy) => {
@@ -140,14 +120,14 @@
         
       }
       const spawnEnemyLPU = () => {
-        const enemy = { type: "LPU", x: Math.random() * 500, y: Math.random() * 500, speed:0.010 };
+        const enemy = { type: "LPU", x: Math.random() * 500, y: Math.random() * 500, speed:0.015 };
               
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       };
       const spawnEnemyNIT = () => {
 
-        const enemy = {type : "NIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.005 }
+        const enemy = {type : "NIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.008 }
 
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
@@ -160,8 +140,8 @@
           return enemy;
       }
 
-      const spawnInterval = setInterval(spawnEnemyLPU, 2000);
-      const delayedinterval1 = delayedinterval(spawnEnemyNIT, 2000);
+      const spawnInterval = setInterval(spawnEnemyLPU, 1500);
+      const delayedinterval1 = delayedinterval(spawnEnemyNIT, 1800);
       const delayedinterval2 = delayedinterval(spawnEnemyIIT, 5000);
       return () => {
         clearInterval(spawnInterval);
@@ -182,7 +162,6 @@
           }
         }
       };
-
       checkCollision();
     }, [playerPosition, enemies]);
 
@@ -197,15 +176,13 @@
     }, []);
     const getEnemyBackground = (type) => {
       if (type === "LPU") {
-      return "red";
+      return "lpulogo.png";
       } else if (type === "IIT") {
-      return "pink";
+      return "iitlogo.png";
       } else if (type === "NIT") {
-      return "orange";
-      } else {
-      return "gray"; // Default color if type is not recognized
-      }
+      return "nitlogo.png";
         };    
+    };
     return (
       <div>
         {gameOver ? (
@@ -221,33 +198,34 @@
             border: "1px solid black",
           }}
         >
-          <div
+          <img
+            src = "vitlogo.png"
             style={{
-              position: "absolute",
-              top: playerPosition.y,
-              left: playerPosition.x,
-              width: "20px",
-              height: "20px",
-              background: "blue",
+                position: "fixed",
+                width: "30px",
+                height: "30px",
+                pointerEvents: "none",
+                zIndex: "9999",
+                top: playerPosition.y - 15,
+                left: playerPosition.x - 15,
             }}
-          ></div>
+          />
           {enemies.map((enemy, index) => (
-            
-            <div
+            <img
+              src = {getEnemyBackground(enemy.type)}
               key={index}
               style={{
                 position: "absolute",
-                top: enemy.y,
-                left: enemy.x,
-                width: "20px",
-                height: "20px",
-                background: getEnemyBackground(enemy.type),
+                top: enemy.y - 15,
+                left: enemy.x -15,
+                width: "30px",
+                height: "30px"
               }}
-            ></div>
+            />
           ))}
         </div>
       </div>
     );
   };
 
-  export default Game;
+export default Game;
