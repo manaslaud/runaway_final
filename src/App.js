@@ -10,8 +10,7 @@
     const [lastx, setLastx] = useState(0);
     const [lasty, setLasty] = useState(0);
   
-    useEffect(() => {   
-                
+    useEffect(() => {
       const handleMouseMove = (event) => {
         const { clientX, clientY } = event;
         targetPositionRef.current = { x: clientX, y: clientY };
@@ -23,19 +22,16 @@
         const directionX = targetX - currentX;
         const directionY = targetY - currentY;
         const distance = Math.sqrt(directionX ** 2 + directionY ** 2);
-  
         // Set a constant velocity magnitude
         const speed = 3;
-  
         // Calculate the velocity components
         const velocityX = (directionX / distance) * speed;
         const velocityY = (directionY / distance) * speed;
-
+        console.log(velocityX, velocityY, currentX, currentY)
         
-        var newX = currentX +velocityX ;
+        var newX = currentX + velocityX ;
         var newY = currentY + velocityY;
 
-        
         if(newX > 600){
           newX = 600;
         }
@@ -59,7 +55,7 @@
         window.removeEventListener("mousemove", handleMouseMove);
       };
   
-    }, [playerPosition, enemies]);
+    }, [playerPosition]);
   
     useEffect(() => {
       const moveNITandLPU = enemies.map((enemy) => {
@@ -159,7 +155,7 @@
       }
       const spawnEnemyIIT = () => {
           
-          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.009 }
+          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.019 }
     
           setEnemies((prevEnemies) => [...prevEnemies, enemy]);
           return enemy;
@@ -179,8 +175,8 @@
       const checkCollision = () => {
         for (const enemy of enemies) {
           if (
-            playerPosition.x+10 > enemy.x && playerPosition.x-10 < enemy.x &&
-            playerPosition.y +10 > enemy.y && playerPosition.y-10 < enemy.y
+            playerPosition.x + 10 > enemy.x && playerPosition.x - 10 < enemy.x &&
+            playerPosition.y + 10 > enemy.y && playerPosition.y - 10 < enemy.y
           ) {
             setGameOver(true);
             break;
