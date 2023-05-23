@@ -6,6 +6,7 @@ import EndPage from './pages/end';
 
 function App() {
   const [gameData, setGameData] = useState(null);
+  const [score, setScore] = useState(0);
 
   const handleStart = (data) => {
     setGameData(data);
@@ -13,7 +14,8 @@ function App() {
 
   const handleEnd = (data) => {
     // Do something with the final data if needed
-    console.log(data);
+    setScore(data);
+    
   };
 
   return (
@@ -29,7 +31,7 @@ function App() {
         />
         <Route
           path="/end"
-          element={<EndPage gameData={gameData} />}
+          element={<EndPage gameData={gameData} score = {score}/>}
         />
       </Routes>
     </Router>

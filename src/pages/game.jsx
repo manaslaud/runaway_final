@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
     const [lasty, setLasty] = useState(0);
     const navigate =  useNavigate();
 
-    console.log(gameData);
     useEffect(() => {
       const handleMouseMove = (event) => {
         let { clientX, clientY } = event;
@@ -179,12 +178,12 @@ import { useNavigate } from 'react-router-dom';
     }, []);
     const getEnemyBackground = (type) => {
       if (type === "LPU") {
-      return "lpulogo.png";
+      return `${gameData}/level1.png`;
       } else if (type === "IIT") {
-      return "iitlogo.png";
+        return `${gameData}/level2.png`;
       } else if (type === "NIT") {
-      return "nitlogo.png";
-        };    
+        return `${gameData}/level3.png`;
+      };
     };
     if(gameOver){
       onEnd(score);
@@ -205,7 +204,7 @@ import { useNavigate } from 'react-router-dom';
             }}
           >
             <img
-              src = "vitlogo.png"
+              src = {`${gameData}/main.png`}
               style={{
                   position: "fixed",
                   width: "30px",
