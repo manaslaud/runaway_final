@@ -128,14 +128,14 @@ import './game.css';
         
       }
       const spawnEnemylevel1 = () => {
-        const enemy = { type: "level1", x: Math.random() * 500, y: Math.random() * 500, speed:0.2 };
+        const enemy = { type: "level1", x: Math.random() * 500, y: Math.random() * 500, speed:0.3 };
               
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       };
       const spawnEnemylevel2 = () => {
 
-        const enemy = {type : "level2", x: Math.random() * 500, y: Math.random() * 500, speed:0.1 }
+        const enemy = {type : "level2", x: Math.random() * 500, y: Math.random() * 500, speed:0.2 }
 
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
@@ -206,19 +206,16 @@ import './game.css';
           >
             <img
               src = {`${gameData}/main.png`}
+              alt = "mainplayer"
+              className = "mainplayer"
               style={{
-                  position: "fixed",
-                  width: "30px",
-                  height: "30px",
-                  pointerEvents: "none",
-                  zIndex: "9999",
                   top: playerPosition.y - 15,
                   left: playerPosition.x - 15,
-                  cursor: "none"
               }}
             />
             {enemies.map((enemy, index) => (
               <img
+                alt = "enemy"
                 src = {getEnemyBackground(enemy.type)}
                 key={index}
                 style={{
