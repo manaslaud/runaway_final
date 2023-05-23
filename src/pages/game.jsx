@@ -5,11 +5,10 @@ import { useNavigate } from 'react-router-dom';
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
     const [enemies, setEnemies] = useState([]);
     const [score, setScore] = useState(0);
-    const counter = useRef(0);
     const [gameOver, setGameOver] = useState(false);
-    const [lastx, setLastx] = useState(0);
-    const [lasty, setLasty] = useState(0);
     const navigate =  useNavigate();
+    const lastxRef = useRef(playerPosition.x);
+    const lastyRef = useRef(playerPosition.y);
 
     useEffect(() => {
       const handleMouseMove = (event) => {
@@ -75,7 +74,6 @@ import { useNavigate } from 'react-router-dom';
         clearInterval(spawnInterval);
       };
     }, [enemies, playerPosition]);
-    
 
     useEffect(() => {
       const moveIIT = () => {
@@ -83,16 +81,14 @@ import { useNavigate } from 'react-router-dom';
           prevEnemies.map((enemy) => {
             if (enemy.type === "IIT") {
               const updatedEnemy = { ...enemy };
-              const directionX = lastx - updatedEnemy.x;
-              const directionY = lasty - updatedEnemy.y;
+              console.log(lastxRef.current, lastyRef.current)
+              const directionX = lastxRef.current - updatedEnemy.x;
+              const directionY = lastyRef.current - updatedEnemy.y;
               const distance = Math.sqrt(directionX ** 2 + directionY ** 2);
         
-              // Set a constant velocity magnitude        
-              // Calculate the velocity components
               const velocityX = (directionX / distance) * updatedEnemy.speed;
               const velocityY = (directionY / distance) * updatedEnemy.speed;
         
-              // Update the player position
               updatedEnemy.x = updatedEnemy.x + velocityX;
               updatedEnemy.y = updatedEnemy.y + velocityY;
               return updatedEnemy;
@@ -101,22 +97,24 @@ import { useNavigate } from 'react-router-dom';
           })
         );
       };
-      counter.current = counter.current + 1;
-      if(counter.current > 100000){
-        moveIIT();
-        if(counter.current > 800000){
-          counter.current = 0;
-        }
+
+      const loopingiit = () => {
+        console.log(playerPosition.x, playerPosition.y)
+        lastxRef.current = playerPosition.x;
+        lastyRef.current = playerPosition.y;
+        console.log("looping iit triggered")
+        let moveit = setInterval(moveIIT, 0.1);
+
+        setTimeout(() => {
+          clearInterval(moveit);
+        }, 4000);
       }
-      else{
-        setLastx(playerPosition.x);
-        setLasty(playerPosition.y);
-      }
+      const spawnInterval = setInterval(loopingiit, 5000);
 
       return () => {
-        clearInterval(moveIIT);
+        clearInterval(spawnInterval);
       };
-    }, [playerPosition, enemies, lastx, lasty]);
+    }, []);
 
     useEffect(() => {
       const delayedinterval = (callback, delay) => {
@@ -139,7 +137,7 @@ import { useNavigate } from 'react-router-dom';
       }
       const spawnEnemyIIT = () => {
           
-          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.019 }
+          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.1 }
     
           setEnemies((prevEnemies) => [...prevEnemies, enemy]);
           return enemy;
@@ -183,9 +181,9 @@ import { useNavigate } from 'react-router-dom';
       if (type === "LPU") {
       return `${gameData}/level1.png`;
       } else if (type === "IIT") {
-        return `${gameData}/level2.png`;
-      } else if (type === "NIT") {
         return `${gameData}/level3.png`;
+      } else if (type === "NIT") {
+        return `${gameData}/level2.png`;
       };
     };
     if(gameOver){
