@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 
-  const Game = () => {
+  const Game = ({gameData, onEnd}) => {
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
     const [enemies, setEnemies] = useState([]);
     const [score, setScore] = useState(0);
@@ -8,7 +9,9 @@ import React, { useState, useEffect, useRef } from "react";
     const [gameOver, setGameOver] = useState(false);
     const [lastx, setLastx] = useState(0);
     const [lasty, setLasty] = useState(0);
-  
+    const navigate =  useNavigate();
+
+    console.log(gameData);
     useEffect(() => {
       const handleMouseMove = (event) => {
         let { clientX, clientY } = event;
@@ -183,49 +186,54 @@ import React, { useState, useEffect, useRef } from "react";
       return "nitlogo.png";
         };    
     };
-    return (
-      <div>
-        {gameOver ? (
-          <div>Game Over! Final Score: {score}</div>
-        ) : (
-          <div>Score: {score}</div>
-        )}
-        <div
-          style={{
-            position: "relative",
-            width: "600px",
-            height: "600px",
-            border: "1px solid black",
-          }}
-        >
-          <img
-            src = "vitlogo.png"
+    if(gameOver){
+      onEnd(score);
+      navigate('/end');
+    }
+    else{
+      return (
+        <div>
+          {
+            <div>Score: {score}</div>
+          }
+          <div
             style={{
-                position: "fixed",
-                width: "30px",
-                height: "30px",
-                pointerEvents: "none",
-                zIndex: "9999",
-                top: playerPosition.y - 15,
-                left: playerPosition.x - 15,
+              position: "relative",
+              width: "600px",
+              height: "600px",
+              border: "1px solid black",
             }}
-          />
-          {enemies.map((enemy, index) => (
+          >
             <img
-              src = {getEnemyBackground(enemy.type)}
-              key={index}
+              src = "vitlogo.png"
               style={{
-                position: "absolute",
-                top: enemy.y - 15,
-                left: enemy.x -15,
-                width: "30px",
-                height: "30px"
+                  position: "fixed",
+                  width: "30px",
+                  height: "30px",
+                  pointerEvents: "none",
+                  zIndex: "9999",
+                  top: playerPosition.y - 15,
+                  left: playerPosition.x - 15,
+                  cursor: "none"
               }}
             />
-          ))}
+            {enemies.map((enemy, index) => (
+              <img
+                src = {getEnemyBackground(enemy.type)}
+                key={index}
+                style={{
+                  position: "absolute",
+                  top: enemy.y - 15,
+                  left: enemy.x -15,
+                  width: "30px",
+                  height: "30px"
+                }}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
   };
 
 export default Game;
