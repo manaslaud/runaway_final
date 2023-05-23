@@ -39,40 +39,43 @@ import { useNavigate } from 'react-router-dom';
     }, []);
   
     useEffect(() => {
-      const moveNITandLPU = enemies.map((enemy) => {
-        if (enemy.type === "LPU") {
-          const updatedenemy = {...enemy};
-          updatedenemy.x = updatedenemy.x + updatedenemy.speed;
-          if (updatedenemy.x > 600) {
-            updatedenemy.speed = -updatedenemy.speed;
-            updatedenemy.x = updatedenemy.x + updatedenemy.speed;
-          }
-          if(updatedenemy.x < 0){
-            updatedenemy.speed = -updatedenemy.speed;
-            updatedenemy.x = updatedenemy.x + updatedenemy.speed;
-          }
-          return updatedenemy
-        }
-        if (enemy.type === "NIT") {
-          const updatedEnemy = { ...enemy };
-          if (enemy.y > playerPosition.y) {
-            updatedEnemy.y = enemy.y - enemy.speed;
-          } else {
-            updatedEnemy.y = enemy.y + enemy.speed;
-          }
-          if (enemy.x > playerPosition.x) {
-            updatedEnemy.x = enemy.x - enemy.speed;
-          } else {
-            updatedEnemy.x = enemy.x + enemy.speed;
-          }
-          return updatedEnemy;
-        }
-        return enemy;
-      });
+      const moveNITandLPU = () => {
+        setEnemies(prevEnemies => {
+          return prevEnemies.map(enemy => {
+            if (enemy.type === "LPU") {
+              const updatedEnemy = { ...enemy };
+              updatedEnemy.x = updatedEnemy.x + updatedEnemy.speed;
+              if (updatedEnemy.x > 600 || updatedEnemy.x < 0) {
+                updatedEnemy.speed = -updatedEnemy.speed;
+              }
+              return updatedEnemy;
+            }
+            if (enemy.type === "NIT") {
+              const updatedEnemy = { ...enemy };
+              if (enemy.y > playerPosition.y) {
+                updatedEnemy.y = enemy.y - enemy.speed;
+              } else {
+                updatedEnemy.y = enemy.y + enemy.speed;
+              }
+              if (enemy.x > playerPosition.x) {
+                updatedEnemy.x = enemy.x - enemy.speed;
+              } else {
+                updatedEnemy.x = enemy.x + enemy.speed;
+              }
+              return updatedEnemy;
+            }
+            return enemy;
+          });
+        });
+      };
     
-      setEnemies(moveNITandLPU);
+      const spawnInterval = setInterval(moveNITandLPU, 0.0001);
+    
+      return () => {
+        clearInterval(spawnInterval);
+      };
     }, [enemies, playerPosition]);
-
+    
 
     useEffect(() => {
       const moveIIT = () => {
@@ -122,14 +125,14 @@ import { useNavigate } from 'react-router-dom';
         
       }
       const spawnEnemyLPU = () => {
-        const enemy = { type: "LPU", x: Math.random() * 500, y: Math.random() * 500, speed:0.015 };
+        const enemy = { type: "LPU", x: Math.random() * 500, y: Math.random() * 500, speed:0.2 };
               
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       };
       const spawnEnemyNIT = () => {
 
-        const enemy = {type : "NIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.008 }
+        const enemy = {type : "NIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.1 }
 
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
@@ -142,9 +145,9 @@ import { useNavigate } from 'react-router-dom';
           return enemy;
       }
 
-      const spawnInterval = setInterval(spawnEnemyLPU, 1500);
-      const delayedinterval1 = delayedinterval(spawnEnemyNIT, 1800);
-      const delayedinterval2 = delayedinterval(spawnEnemyIIT, 5000);
+      const spawnInterval = setInterval(spawnEnemyLPU, 4500);
+      const delayedinterval1 = delayedinterval(spawnEnemyNIT, 5400);
+      const delayedinterval2 = delayedinterval(spawnEnemyIIT, 15000);
       return () => {
         clearInterval(spawnInterval);
         clearInterval(delayedinterval1);
