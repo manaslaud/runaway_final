@@ -40,10 +40,10 @@ import './game.css';
     }, []);
   
     useEffect(() => {
-      const moveNITandLPU = () => {
+      const movelevel2andlevel1 = () => {
         setEnemies(prevEnemies => {
           return prevEnemies.map(enemy => {
-            if (enemy.type === "LPU") {
+            if (enemy.type === "level1") {
               const updatedEnemy = { ...enemy };
               updatedEnemy.x = updatedEnemy.x + updatedEnemy.speed;
               if (updatedEnemy.x > 600 || updatedEnemy.x < 0) {
@@ -51,7 +51,7 @@ import './game.css';
               }
               return updatedEnemy;
             }
-            if (enemy.type === "NIT") {
+            if (enemy.type === "level2") {
               const updatedEnemy = { ...enemy };
               if (enemy.y > playerPosition.y) {
                 updatedEnemy.y = enemy.y - enemy.speed;
@@ -70,7 +70,7 @@ import './game.css';
         });
       };
     
-      const spawnInterval = setInterval(moveNITandLPU, 0.0001);
+      const spawnInterval = setInterval(movelevel2andlevel1, 0.0001);
     
       return () => {
         clearInterval(spawnInterval);
@@ -83,10 +83,10 @@ import './game.css';
     }, [playerPosition]);
     
     useEffect(() => {
-      const moveIIT = () => {
+      const movelevel3 = () => {
         setEnemies((prevEnemies) =>
           prevEnemies.map((enemy) => {
-            if (enemy.type === "IIT") {
+            if (enemy.type === "level3") {
               const updatedEnemy = { ...enemy };
               const directionX = lastxRef.current - updatedEnemy.x;
               const directionY = lastyRef.current - updatedEnemy.y;
@@ -104,17 +104,17 @@ import './game.css';
         );
       };
 
-      const loopingiit = () => {
+      const loopinglevel3 = () => {
         lastxRef.current = playerPositionRef.current.x;
         lastyRef.current = playerPositionRef.current.y;
-        console.log("looping iit triggered")
-        let moveit = setInterval(moveIIT, 0.1);
+        console.log("looping level3 triggered")
+        let moveit = setInterval(movelevel3, 0.1);
 
         setTimeout(() => {
           clearInterval(moveit);
         }, 4000);
       }
-      const spawnInterval = setInterval(loopingiit, 6000);
+      const spawnInterval = setInterval(loopinglevel3, 6000);
 
       return () => {
         clearInterval(spawnInterval);
@@ -127,30 +127,30 @@ import './game.css';
         return intervalid;
         
       }
-      const spawnEnemyLPU = () => {
-        const enemy = { type: "LPU", x: Math.random() * 500, y: Math.random() * 500, speed:0.2 };
+      const spawnEnemylevel1 = () => {
+        const enemy = { type: "level1", x: Math.random() * 500, y: Math.random() * 500, speed:0.2 };
               
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       };
-      const spawnEnemyNIT = () => {
+      const spawnEnemylevel2 = () => {
 
-        const enemy = {type : "NIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.1 }
+        const enemy = {type : "level2", x: Math.random() * 500, y: Math.random() * 500, speed:0.1 }
 
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       }
-      const spawnEnemyIIT = () => {
+      const spawnEnemylevel3 = () => {
           
-          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.8 }
+          const enemy = {type : "level3", x: Math.random() * 500, y: Math.random() * 500, speed:0.8 }
     
           setEnemies((prevEnemies) => [...prevEnemies, enemy]);
           return enemy;
       }
 
-      const spawnInterval = setInterval(spawnEnemyLPU, 4500);
-      const delayedinterval1 = delayedinterval(spawnEnemyNIT, 5400);
-      const delayedinterval2 = delayedinterval(spawnEnemyIIT, 15000);
+      const spawnInterval = setInterval(spawnEnemylevel1, 4500);
+      const delayedinterval1 = delayedinterval(spawnEnemylevel2, 5400);
+      const delayedinterval2 = delayedinterval(spawnEnemylevel3, 15000);
       return () => {
         clearInterval(spawnInterval);
         clearInterval(delayedinterval1);
@@ -183,11 +183,11 @@ import './game.css';
       };
     }, []);
     const getEnemyBackground = (type) => {
-      if (type === "LPU") {
+      if (type === "level1") {
       return `${gameData}/level1.png`;
-      } else if (type === "IIT") {
+      } else if (type === "level3") {
         return `${gameData}/level3.png`;
-      } else if (type === "NIT") {
+      } else if (type === "level2") {
         return `${gameData}/level2.png`;
       };
     };
@@ -202,7 +202,7 @@ import './game.css';
             <div>Score: {score}</div>
           }
           <div
-          class = "game"
+          className = "playingarea"
           >
             <img
               src = {`${gameData}/main.png`}
