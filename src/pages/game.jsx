@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
+import './game.css';
 
   const Game = ({gameData, onEnd}) => {
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
@@ -9,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
     const navigate =  useNavigate();
     const lastxRef = useRef(playerPosition.x);
     const lastyRef = useRef(playerPosition.y);
+    const playerPositionRef = useRef(playerPosition);
 
     useEffect(() => {
       const handleMouseMove = (event) => {
@@ -75,13 +77,17 @@ import { useNavigate } from 'react-router-dom';
       };
     }, [enemies, playerPosition]);
 
+
+    useEffect(() => {
+      playerPositionRef.current = playerPosition;
+    }, [playerPosition]);
+    
     useEffect(() => {
       const moveIIT = () => {
         setEnemies((prevEnemies) =>
           prevEnemies.map((enemy) => {
             if (enemy.type === "IIT") {
               const updatedEnemy = { ...enemy };
-              console.log(lastxRef.current, lastyRef.current)
               const directionX = lastxRef.current - updatedEnemy.x;
               const directionY = lastyRef.current - updatedEnemy.y;
               const distance = Math.sqrt(directionX ** 2 + directionY ** 2);
@@ -99,9 +105,8 @@ import { useNavigate } from 'react-router-dom';
       };
 
       const loopingiit = () => {
-        console.log(playerPosition.x, playerPosition.y)
-        lastxRef.current = playerPosition.x;
-        lastyRef.current = playerPosition.y;
+        lastxRef.current = playerPositionRef.current.x;
+        lastyRef.current = playerPositionRef.current.y;
         console.log("looping iit triggered")
         let moveit = setInterval(moveIIT, 0.1);
 
@@ -109,7 +114,7 @@ import { useNavigate } from 'react-router-dom';
           clearInterval(moveit);
         }, 4000);
       }
-      const spawnInterval = setInterval(loopingiit, 5000);
+      const spawnInterval = setInterval(loopingiit, 6000);
 
       return () => {
         clearInterval(spawnInterval);
@@ -137,7 +142,7 @@ import { useNavigate } from 'react-router-dom';
       }
       const spawnEnemyIIT = () => {
           
-          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.1 }
+          const enemy = {type : "IIT", x: Math.random() * 500, y: Math.random() * 500, speed:0.8 }
     
           setEnemies((prevEnemies) => [...prevEnemies, enemy]);
           return enemy;
@@ -197,12 +202,7 @@ import { useNavigate } from 'react-router-dom';
             <div>Score: {score}</div>
           }
           <div
-            style={{
-              position: "relative",
-              width: "600px",
-              height: "600px",
-              border: "1px solid black",
-            }}
+          class = "game"
           >
             <img
               src = {`${gameData}/main.png`}
