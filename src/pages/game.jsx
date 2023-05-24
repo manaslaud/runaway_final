@@ -108,12 +108,12 @@ import song from './canttouchthis.ogg';
       const loopinglevel3 = () => {
         lastxRef.current = playerPositionRef.current.x;
         lastyRef.current = playerPositionRef.current.y;
-        console.log("looping level3 triggered")
+
         let moveit = setInterval(movelevel3, 0.1);
 
         setTimeout(() => {
           clearInterval(moveit);
-        }, 4000);
+        }, 5000);
       }
       const spawnInterval = setInterval(loopinglevel3, 6000);
 
@@ -129,21 +129,21 @@ import song from './canttouchthis.ogg';
         
       }
       const spawnEnemylevel1 = () => {
-        const enemy = { type: "level1", x: Math.random() * 500, y: Math.random() * 500, speed:0.3 };
+        const enemy = { type: "level1", x: Math.random() * 500, y: Math.random() * 500, speed:0.6 };
               
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       };
       const spawnEnemylevel2 = () => {
 
-        const enemy = {type : "level2", x: Math.random() * 500, y: Math.random() * 500, speed:0.2 }
+        const enemy = {type : "level2", x: Math.random() * 500, y: Math.random() * 500, speed:0.4 }
 
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       }
       const spawnEnemylevel3 = () => {
           
-          const enemy = {type : "level3", x: Math.random() * 500, y: Math.random() * 500, speed:0.8 }
+          const enemy = {type : "level3", x: Math.random() * 500, y: Math.random() * 500, speed:1 }
     
           setEnemies((prevEnemies) => [...prevEnemies, enemy]);
           return enemy;
@@ -163,8 +163,8 @@ import song from './canttouchthis.ogg';
       const checkCollision = () => {
         for (const enemy of enemies) {
           if (
-            playerPosition.x + 10 > enemy.x && playerPosition.x - 10 < enemy.x &&
-            playerPosition.y + 10 > enemy.y && playerPosition.y - 10 < enemy.y
+            playerPosition.x + 12 > enemy.x && playerPosition.x - 12 < enemy.x &&
+            playerPosition.y + 12 > enemy.y && playerPosition.y - 12 < enemy.y
           ) {
             setGameOver(true);
             break;
@@ -200,7 +200,7 @@ import song from './canttouchthis.ogg';
       return (
         
         <div style = {{cursor:'none'}}>
-          <audio controls autoPlay loop style={{display:'none'}}>
+          <audio autoPlay loop style={{display:'none'}}>
             <source src = {song} type = "audio/ogg"/>
           </audio>
           {
