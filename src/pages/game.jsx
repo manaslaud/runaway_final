@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import './game.css';
-import ReactAudioPlayer from 'react-audio-player';
+import song from './canttouchthis.ogg';
 
   const Game = ({gameData, onEnd}) => {
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
@@ -198,18 +198,17 @@ import ReactAudioPlayer from 'react-audio-player';
     }
     else{
       return (
-        <div>
+        
+        <div style = {{cursor:'none'}}>
+          <audio controls autoPlay loop style={{display:'none'}}>
+            <source src = {song} type = "audio/ogg"/>
+          </audio>
           {
             <div>Score: {score}</div>
           }
           <div
           className = "playingarea"
           >
-            <ReactAudioPlayer
-              src="./canttouchthis3.ogg"
-              autoPlay
-              loop
-            />
             <img
               src = {`${gameData}/main.png`}
               alt = "mainplayer"
