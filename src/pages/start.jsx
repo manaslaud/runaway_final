@@ -7,28 +7,40 @@ function StartPage({onStart }) {
   const navigate =  useNavigate();
 
 
+  const handleButtonClick = (value) => {
+    setFormData(value);
+  };
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     onStart(formData);
     navigate('/game');
   };
 
-  const handleChange = (event) => {
-    setFormData(event.target.value);
-  }
-
   return (
     <div>
       <h1>Start Page</h1>
-      <form onSubmit={handleSubmit}>
+      <div>
         <label>
-          Enter Object:
-          <input type="text" value={formData} onChange = {handleChange} />
+          <button type="button" onClick={() => handleButtonClick("college")}>
+            college
+          </button>
         </label>
-        <button type="submit">Start Game</button>
-      </form>
+        <label>
+          <button type="button" onClick={() => handleButtonClick("companies")}>
+            IT Companies
+          </button>
+        </label>
+        <label>
+          <button type="button" onClick={() => handleButtonClick("programming")}>
+            Programming languages
+          </button>
+        </label>
+      </div>
+      <button type="submit" onClick={handleSubmit}>
+        Start Game
+      </button>
     </div>
   );
-}
-
+};
 export default StartPage;
