@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import './game.css';
 import song from './canttouchthis.ogg';
-
+sessionStorage.setItem('song', song);
   const Game = ({gameData, onEnd}) => {
     const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
     const [enemies, setEnemies] = useState([]);
@@ -12,7 +12,6 @@ import song from './canttouchthis.ogg';
     const lastxRef = useRef(playerPosition.x);
     const lastyRef = useRef(playerPosition.y);
     const playerPositionRef = useRef(playerPosition);
-
     useEffect(() => {
       const handleMouseMove = (event) => {
         let { clientX, clientY } = event;
@@ -201,7 +200,7 @@ import song from './canttouchthis.ogg';
         
         <div style = {{cursor:'none'}}>
           <audio autoPlay loop style={{display:'none'}}>
-            <source src = {song} type = "audio/ogg"/>
+            <source src = {sessionStorage.getItem('song')} type = "audio/ogg"/>
           </audio>
           {
             <div>Score: {score}</div>
