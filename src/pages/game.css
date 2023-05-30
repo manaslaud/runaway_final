@@ -4,9 +4,9 @@
     left:48%;
 }
 .playingarea{
-    position: absolute;
-    top: 55%;
-    left: 50%;
+    position: fixed;
+    top: 400px;
+    left: 800px;
     transform: translate(-50%, -50%); 
     width: 800px;
     height: 600px;

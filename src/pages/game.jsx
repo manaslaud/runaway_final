@@ -12,20 +12,20 @@ sessionStorage.setItem('song', song);
     const lastxRef = useRef(playerPosition.x);
     const lastyRef = useRef(playerPosition.y);
     const playerPositionRef = useRef(playerPosition);
-    const xshift = 500;
-    const yshift = 40;
+    const xshift = 0;
+    const yshift = 0;
     useEffect(() => {
       const handleMouseMove = (event) => {
         let { clientX, clientY } = event;
-
-        if(clientX > 600 + xshift){
-          clientX = 600 + xshift;
+        console.log(clientX, clientY)
+        if(clientX > 800 + xshift){
+          clientX = 800 + xshift;
         }
         if(clientX < 0 + xshift){
           clientX = 0  + xshift;
         }
-        if(clientY > 600 + yshift){
-          clientY = 600 + yshift;
+        if(clientY > 400 + yshift){
+          clientY = 800 + yshift;
         }
         if(clientY < 0 + yshift){
           clientY = 0 + yshift;
@@ -48,7 +48,7 @@ sessionStorage.setItem('song', song);
             if (enemy.type === "level1") {
               const updatedEnemy = { ...enemy };
               updatedEnemy.x = updatedEnemy.x + updatedEnemy.speed;
-              if (updatedEnemy.x > 600 + xshift || updatedEnemy.x < 0 + xshift) {
+              if (updatedEnemy.x > 800 + xshift || updatedEnemy.x < 0 + xshift) {
                 updatedEnemy.speed = -updatedEnemy.speed;
               }
               return updatedEnemy;
@@ -116,7 +116,7 @@ sessionStorage.setItem('song', song);
           clearInterval(moveit);
         }, 5000);
       }
-      const spawnInterval = setInterval(loopinglevel3, 6000);
+      const spawnInterval = setInterval(loopinglevel3, 8000);
 
       return () => {
         clearInterval(spawnInterval);
