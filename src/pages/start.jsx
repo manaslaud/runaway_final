@@ -58,10 +58,7 @@ function StartPage({onStart }) {
           </button>
         </div>
       </div>
-    </div>
-    
-    </div>
-   
+    </div>   
   );
 }
 export default StartPage;
