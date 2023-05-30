@@ -1,8 +1,17 @@
-.playingarea{
+.Score{
     position: relative;
-    width: 600px;
+    top:2px;
+    left:48%;
+}
+.playingarea{
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 800px;
     height: 600px;
-    border: 1px solid black;
+    border: 5px solid black;
+    background-image:radial-gradient( #5738AF, #1C1C1C);
 }
 .mainplayer{
     position: fixed;

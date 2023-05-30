@@ -7,6 +7,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import './end.css';
+import { blue } from '@mui/material/colors';
 
 const columns = [
   { id: 'name_runaway', label: 'username', minWidth: 100 },
@@ -75,11 +77,12 @@ export default function ColumnGroupingTable() {
   };
 
   return (
+    
     <Paper sx={{ width: '100%' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
+      <TableContainer sx={{ maxHeight: 440 }} >
+        <Table stickyHeader aria-label="sticky table" class="row">
+          <TableHead >
+            <TableRow >
               <TableCell align="center" colSpan={2}>
                 Runaway
               </TableCell>
@@ -96,12 +99,14 @@ export default function ColumnGroupingTable() {
                 Tetris 
               </TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow >
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ top: 57, minWidth: column.minWidth }}
+                  style={{ top: 57, minWidth: column.minWidth,
+                            
+                   }}
                 >
                   {column.label}
                 </TableCell>

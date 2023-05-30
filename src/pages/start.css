@@ -1,0 +1,75 @@
+.gameName{
+    position: absolute;
+    top: 35px;
+
+}
+.Final{
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image:radial-gradient( #5738AF, #1C1C1C);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Optional: Center text content */
+    border: 10px solid black;
+   
+}
+
+.btn{
+    position: relative;
+    left: 0px;
+    border-radius: 90px;
+    border: none;
+    background-color: transparent;
+    /* margin: 10px; */
+    flex-basis: calc(33.33% - 10px); /* Adjust the width as needed */
+    margin: 5px;
+}
+
+.btnimg{
+    width: 100px;
+    transition: opacity 0.5s ease;
+}
+.start{
+    
+    border-radius: 90px;
+    border: none;
+    background-color: transparent;
+    margin: 10px;
+    
+}
+.madeby{
+    width: 400px;
+    height: 50px;
+    position: absolute;
+    top: 90%;
+    right: 25%;
+}
+
+.Row {
+    display: inline-flex;
+    flex-basis: 100%;
+    align-items: center;
+  }
+
+.ButtonsContainer{  
+    position: absolute;
+    top: 50px;
+    right: -330px;
+    flex-wrap: wrap;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 10px solid black;
+}
+.Main{
+    position: absolute;
+    left: 33%;
+    top: 25%;
+    background-color: #E8E8EE;
+}

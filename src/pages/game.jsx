@@ -12,21 +12,23 @@ sessionStorage.setItem('song', song);
     const lastxRef = useRef(playerPosition.x);
     const lastyRef = useRef(playerPosition.y);
     const playerPositionRef = useRef(playerPosition);
+    const xshift = 500;
+    const yshift = 40;
     useEffect(() => {
       const handleMouseMove = (event) => {
         let { clientX, clientY } = event;
 
-        if(clientX > 600){
-          clientX = 600;
+        if(clientX > 600 + xshift){
+          clientX = 600 + xshift;
         }
-        if(clientX < 0){
-          clientX = 0;
+        if(clientX < 0 + xshift){
+          clientX = 0  + xshift;
         }
-        if(clientY > 600){
-          clientY = 600;
+        if(clientY > 600 + yshift){
+          clientY = 600 + yshift;
         }
-        if(clientY < 0){
-          clientY = 0;
+        if(clientY < 0 + yshift){
+          clientY = 0 + yshift;
         }
         setPlayerPosition({ x: clientX, y: clientY });
       };
@@ -46,7 +48,7 @@ sessionStorage.setItem('song', song);
             if (enemy.type === "level1") {
               const updatedEnemy = { ...enemy };
               updatedEnemy.x = updatedEnemy.x + updatedEnemy.speed;
-              if (updatedEnemy.x > 600 || updatedEnemy.x < 0) {
+              if (updatedEnemy.x > 600 + xshift || updatedEnemy.x < 0 + xshift) {
                 updatedEnemy.speed = -updatedEnemy.speed;
               }
               return updatedEnemy;
@@ -128,21 +130,21 @@ sessionStorage.setItem('song', song);
         
       }
       const spawnEnemylevel1 = () => {
-        const enemy = { type: "level1", x: Math.random() * 500, y: Math.random() * 500, speed:0.6 };
+        const enemy = { type: "level1", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:0.6 };
               
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       };
       const spawnEnemylevel2 = () => {
 
-        const enemy = {type : "level2", x: Math.random() * 500, y: Math.random() * 500, speed:0.4 }
+        const enemy = {type : "level2", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:0.4 }
 
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       }
       const spawnEnemylevel3 = () => {
           
-          const enemy = {type : "level3", x: Math.random() * 500, y: Math.random() * 500, speed:1 }
+          const enemy = {type : "level3", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:1 }
     
           setEnemies((prevEnemies) => [...prevEnemies, enemy]);
           return enemy;
@@ -203,7 +205,7 @@ sessionStorage.setItem('song', song);
             <source src = {sessionStorage.getItem('song')} type = "audio/ogg"/>
           </audio>
           {
-            <div>Score: {score}</div>
+            <h2 className="Score">Score: {score}</h2>
           }
           <div
           className = "playingarea"
