@@ -46,12 +46,37 @@
     font-family: 'retro', sans-serif;
     color: snow;
     cursor:pointer;
-    transition: text-decoration 0.3s ease;
 
 }
-.strike-through {
-    text-decoration: line-through;
-}
+
+@keyframes strikethrough {
+    0% {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    100% {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+  
+  .strike-through {
+    transition: all 0.5s cubic-bezier(.55, 0, .1, 1);
+  }
+  
+  .strike-through:after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 190%;
+    height: 3.5px;
+    bottom:25px;
+    background: snow;
+    transform-origin: left;
+    animation: strikethrough 0.5s cubic-bezier(.55, 0, .1, 1) forwards;
+    transition: transform 0.5s cubic-bezier(.55, 0, .1, 1);
+    z-index:99900;
+  }
 
 .btnimg {
     width: 100px;
