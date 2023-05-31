@@ -2,12 +2,11 @@
 
 .gameName {
     position: absolute;
-    top: 10px;
+    top: 2% ;
     font-family: 'retro', sans-serif;
     font-size:120px;
     color: snow;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-
 }
 
 .Final {
@@ -30,8 +29,6 @@
 
 .btn {
     position: relative;
-    left: 0px;
-    border-radius: 90px;
     border: none;
     background-color: transparent;
     margin: 5px;
@@ -48,6 +45,9 @@
     background-color: transparent;
     font-family: 'retro', sans-serif;
     color: snow;
+    cursor:pointer;
+    transition: text-decoration 0.3s ease;
+
 }
 .strike-through {
     text-decoration: line-through;

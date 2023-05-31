@@ -16,7 +16,18 @@
     z-index: 9999;
     border: none;
     background-color: transparent;
+    cursor: pointer; 
+    transition: transform 0.2s;
 }
+
+.Replay:hover {
+    transform: scale(1.1); 
+}
+
+.Replay:active {
+    transform: scale(0.9); 
+}
+
 .scoreText{
     position: absolute;
     font-size: 30px;

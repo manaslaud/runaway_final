@@ -55,7 +55,7 @@ function StartPage({onStart }) {
       <div className="gameName">
         Runaway
       </div>
-      <button onClick={handlevolume} className={`${isClicked ? 'strike-through' : ''} volume` }>
+      <button onClick={handlevolume} className={`volume ${isClicked ? 'strike-through' : ''}` }>
       Sound
      </button>
       <div className="Main">
