@@ -14,7 +14,7 @@ function EndPage({ gameData, score }) {
 
   return (
     <div className="container">
-       <button className="Replay" onClick={redirect}>Replay</button>
+       <button className="Replay" onClick={redirect}>Replay?</button>
       <h3 className="scoreText">Your score is {score} in {gameData.theme}</h3>
       <div className="ScoreContainer">
       <CustomGroupingTable />

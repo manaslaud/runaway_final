@@ -1,41 +1,40 @@
 @import 'fonts.css';
 
-.row{
-   width: 100%;
-}
-
 .ScoreContainer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:30%;
+    
 }
 
-.TableContainer{
-    position: absolute;
-    top: 100px;
-    left: 200px;
-    
-} 
 .Replay{
     position: absolute;
     font-size: 30px;
     font-family: 'retro', sans-serif;
-    top: 27px;
-    right: 2%;
+    top: 13%;
     z-index: 9999;
     border: none;
     background-color: transparent;
 }
-body{
-    background-color: #ffffff;
-}
-
 .scoreText{
-    position: relative;
-    left: 40%;
+    position: absolute;
     font-size: 30px;
+    bottom: 85.5%;
+    z-index: 999;
     font-family: 'retro', sans-serif;
 }
 .container{
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     border: 10px solid black;
 }
