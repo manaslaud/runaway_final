@@ -19,6 +19,7 @@
     font-size: 20px;
     top: 27px;
     right: 2%;
+    z-index: 9999;
 }
 body{
     background-color: #ffffff;

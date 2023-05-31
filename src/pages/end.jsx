@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 function EndPage({ gameData, score }) {
   const navigate =  useNavigate();
+  
   const redirect = () => {
     navigate('/');
   }

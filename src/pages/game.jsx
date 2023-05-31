@@ -4,7 +4,7 @@ import './game.css';
 import song from './canttouchthis.ogg';
 sessionStorage.setItem('song', song);
   const Game = ({gameData, onEnd}) => {
-    const [playerPosition, setPlayerPosition] = useState({ x: 250, y: 250 });
+    const [playerPosition, setPlayerPosition] = useState({ x: 400, y: 350 });
     const [enemies, setEnemies] = useState([]);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
@@ -17,6 +17,12 @@ sessionStorage.setItem('song', song);
     useEffect(() => {
       const handleMouseMove = (event) => {
         let { clientX, clientY } = event;
+        const rect = document.querySelector('.playingarea').getBoundingClientRect();
+        const offsetX = rect.left + window.scrollX;
+        const offsetY = rect.top + window.scrollY;
+        clientX -= offsetX;
+        clientY -= offsetY;
+
         console.log(clientX, clientY)
         if(clientX > 800 + xshift){
           clientX = 800 + xshift;
@@ -24,8 +30,8 @@ sessionStorage.setItem('song', song);
         if(clientX < 0 + xshift){
           clientX = 0  + xshift;
         }
-        if(clientY > 400 + yshift){
-          clientY = 800 + yshift;
+        if(clientY > 600 + yshift){
+          clientY = 600 + yshift;
         }
         if(clientY < 0 + yshift){
           clientY = 0 + yshift;

@@ -1,12 +1,15 @@
 .Score{
-    position: relative;
+    position: fixed;
     top:2px;
-    left:48%;
+    left:700px;
 }
+body{
+    height: 100vh;
+} 
 .playingarea{
     position: fixed;
-    top: 400px;
-    left: 800px;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%); 
     width: 800px;
     height: 600px;
@@ -14,7 +17,7 @@
     background-image:radial-gradient( #5738AF, #1C1C1C);
 }
 .mainplayer{
-    position: fixed;
+    position: absolute;
     width: 30px;
     height: 30px;
     pointer-events: none;
