@@ -40,14 +40,21 @@ function StartPage({onStart }) {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    onStart(formData);
-    navigate('/game');
+    if(formData.theme !== ''){
+      onStart(formData);
+      navigate('/game');
+    }
+    else{
+      alert("Please select a theme");
+    }
   };
 
   return (
     <div className="Final">
-      <img src="madeby.png" className="madeby" />
-      <img src="name.png" className="gameName" />
+      <img src="madeby.png" className="madeby" alt="madeby" />
+      <div className="gameName">
+        Runaway
+      </div>
       <button onClick={handlevolume} className={`${isClicked ? 'strike-through' : ''} volume` }>
       Sound
      </button>
@@ -55,17 +62,17 @@ function StartPage({onStart }) {
         <div className="ButtonsContainer">
           <div className="Row">
             <button type="button" onClick={() => handleButtonClick('colleges')} className="btn">
-              <img src="options/noclick/colleges.png" className="btnimg" ref={collegesRef} id = "colleges"/>
+              <img src="options/noclick/colleges.png" className="btnimg" ref={collegesRef} id = "colleges" alt = "colleges"/>
             </button>
             <button type="button" onClick={() => handleButtonClick('companies')} className="btn">
-              <img src="options/noclick/companies.png" className="btnimg" ref={companiesRef} id = "companies"/>
+              <img src="options/noclick/companies.png" className="btnimg" ref={companiesRef} id = "companies" alt = "companies"/>
             </button>
             <button type="button" onClick={() => handleButtonClick('programming')} className="btn">
-              <img src="options/noclick/programming.png" className="btnimg" ref={programmingRef} id = "programming" />
+              <img src="options/noclick/programming.png" className="btnimg" ref={programmingRef} id = "programming" alt = "programming" />
             </button>
           </div>
           <button type="submit" onClick={handleSubmit} className="start">
-            <img src="start.png" className="btnimg" />
+            <img src="start.png" className="btnimg" alt="start" />
           </button>
         </div>
       </div>

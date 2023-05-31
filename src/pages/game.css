@@ -14,7 +14,8 @@ body{
     width: 800px;
     height: 600px;
     border: 5px solid black;
-    background-image:radial-gradient( #5738AF, #1C1C1C);
+    background-color: #faedfc;
+
 }
 .mainplayer{
     position: absolute;

@@ -2,7 +2,12 @@
 
 .gameName {
     position: absolute;
-    top: 35px;
+    top: 10px;
+    font-family: 'retro', sans-serif;
+    font-size:120px;
+    color: snow;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
 }
 
 .Final {
@@ -11,8 +16,10 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    background-image: url("background.png");
+    background-size: cover;
+    background-position: center;
     transform: translate(-50%, -50%);
-    background-image: radial-gradient(#5738AF, #1C1C1C);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -40,6 +47,7 @@
     font-size: 35px;
     background-color: transparent;
     font-family: 'retro', sans-serif;
+    color: snow;
 }
 .strike-through {
     text-decoration: line-through;
@@ -65,7 +73,7 @@
 }
 
 .Row {
-    display: inline-flex;
+    display: flex;
     flex-basis: 100%;
     align-items: center;
 }
@@ -74,13 +82,12 @@ body {
 }
 .ButtonsContainer {
     position: absolute;
-    top: 50px;
+    top: 140px;
     right: -330px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    border: 10px solid black;
 }
 
 .Main {
