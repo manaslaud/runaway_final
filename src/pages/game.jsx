@@ -14,15 +14,17 @@ sessionStorage.setItem('song', song);
     const playerPositionRef = useRef(playerPosition);
     const xshift = 0;
     const yshift = 0;
+    const playingAreaRef = useRef(null);
     useEffect(() => {
       const handleMouseMove = (event) => {
         let { clientX, clientY } = event;
-        const rect = document.querySelector('.playingarea').getBoundingClientRect();
-        const offsetX = rect.left + window.scrollX;
-        const offsetY = rect.top + window.scrollY;
-        clientX -= offsetX;
-        clientY -= offsetY;
-
+        if (playingAreaRef.current) {
+          const rect = playingAreaRef.current.getBoundingClientRect();
+          const offsetX = rect.left + window.scrollX;
+          const offsetY = rect.top + window.scrollY;
+          clientX -= offsetX;
+          clientY -= offsetY;
+        }
         if(clientX > 800 + xshift){
           clientX = 800 + xshift;
         }
@@ -135,29 +137,29 @@ sessionStorage.setItem('song', song);
         
       }
       const spawnEnemylevel1 = () => {
-        const enemy = { type: "level1", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:0.6 };
+        const enemy = { type: "level1", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:1.1 };
               
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       };
       const spawnEnemylevel2 = () => {
 
-        const enemy = {type : "level2", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:0.4 }
+        const enemy = {type : "level2", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:0.8 }
 
         setEnemies((prevEnemies) => [...prevEnemies, enemy]);
         return enemy;
       }
       const spawnEnemylevel3 = () => {
           
-          const enemy = {type : "level3", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:1 }
+          const enemy = {type : "level3", x: Math.random() * 500 + xshift, y: Math.random() * 500 + yshift, speed:1.7 }
     
           setEnemies((prevEnemies) => [...prevEnemies, enemy]);
           return enemy;
       }
 
-      const spawnInterval = setInterval(spawnEnemylevel1, 4500);
+      const spawnInterval = setInterval(spawnEnemylevel1, 4000);
       const delayedinterval1 = delayedinterval(spawnEnemylevel2, 5400);
-      const delayedinterval2 = delayedinterval(spawnEnemylevel3, 15000);
+      const delayedinterval2 = delayedinterval(spawnEnemylevel3, 13000);
       return () => {
         clearInterval(spawnInterval);
         clearInterval(delayedinterval1);
@@ -183,7 +185,7 @@ sessionStorage.setItem('song', song);
     useEffect(() => {
       const scoreInterval = setInterval(() => {
         setScore((prevScore) => prevScore + 1);
-      }, 1000);
+      }, 100);
 
       return () => {
         clearInterval(scoreInterval);
@@ -215,7 +217,7 @@ sessionStorage.setItem('song', song);
             <h2 className="Score">Score: {score}</h2>
           }
           <div
-          className = "playingarea"
+          className = "playingarea" ref={playingAreaRef}
           >
             <img
               src = {`${gameData.theme}/main.png`}

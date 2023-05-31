@@ -10,14 +10,17 @@
 
 .Replay{
     position: absolute;
-    font-size: 30px;
-    font-family: 'retro', sans-serif;
     top: 13%;
     z-index: 9999;
     border: none;
     background-color: transparent;
     cursor: pointer; 
     transition: transform 0.3s;
+    padding-top: 4px;
+    padding-right:4px;
+}
+.replaybtn{
+    width:100px
 }
 
 .Replay:hover {
@@ -47,5 +50,12 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 10px solid black;
+    box-shadow: 0 0 10px 3px #FB298D;
+    border-radius: 15px;
+    transition: box-shadow 0.3s ease-in-out;
+    background-color: #faedfc;
+}
+
+.container:hover{
+    box-shadow: 0 0 10px 7px #FB298D;
 }

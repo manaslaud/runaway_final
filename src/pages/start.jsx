@@ -53,7 +53,7 @@ function StartPage({onStart }) {
     <div className="Final">
       <img src="madeby.png" className="madeby" alt="madeby" />
       <div className="gameName">
-        Runaway
+        <a href="https://github.com/woaitsAryan/runaway" className='link' target="_blank">Runaway</a>
       </div>
       <button onClick={handlevolume} className={`volume ${isClicked ? 'strike-through' : ''}` }>
       Sound
