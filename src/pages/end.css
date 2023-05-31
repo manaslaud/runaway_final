@@ -1,4 +1,6 @@
- .row{
+@import 'fonts.css';
+
+.row{
    width: 100%;
 }
 
@@ -16,10 +18,13 @@
 } 
 .Replay{
     position: absolute;
-    font-size: 20px;
+    font-size: 30px;
+    font-family: 'retro', sans-serif;
     top: 27px;
     right: 2%;
     z-index: 9999;
+    border: none;
+    background-color: transparent;
 }
 body{
     background-color: #ffffff;
@@ -27,7 +32,9 @@ body{
 
 .scoreText{
     position: relative;
-    left: 42%;
+    left: 40%;
+    font-size: 30px;
+    font-family: 'retro', sans-serif;
 }
 .container{
     border: 10px solid black;

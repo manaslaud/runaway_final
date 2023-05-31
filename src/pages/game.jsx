@@ -23,7 +23,6 @@ sessionStorage.setItem('song', song);
         clientX -= offsetX;
         clientY -= offsetY;
 
-        console.log(clientX, clientY)
         if(clientX > 800 + xshift){
           clientX = 800 + xshift;
         }
@@ -192,11 +191,11 @@ sessionStorage.setItem('song', song);
     }, []);
     const getEnemyBackground = (type) => {
       if (type === "level1") {
-      return `${gameData}/level1.png`;
+      return `${gameData.theme}/level1.png`;
       } else if (type === "level3") {
-        return `${gameData}/level3.png`;
+        return `${gameData.theme}/level3.png`;
       } else if (type === "level2") {
-        return `${gameData}/level2.png`;
+        return `${gameData.theme}/level2.png`;
       };
     };
     if(gameOver){
@@ -207,9 +206,11 @@ sessionStorage.setItem('song', song);
       return (
         
         <div style = {{cursor:'none'}}>
-          <audio autoPlay loop style={{display:'none'}}>
-            <source src = {sessionStorage.getItem('song')} type = "audio/ogg"/>
-          </audio>
+         {gameData.novolume ? null : (
+            <audio autoPlay loop style={{ display: 'none' }}>
+              <source src={sessionStorage.getItem('song')} type="audio/ogg" />
+            </audio>
+          )}
           {
             <h2 className="Score">Score: {score}</h2>
           }
@@ -217,7 +218,7 @@ sessionStorage.setItem('song', song);
           className = "playingarea"
           >
             <img
-              src = {`${gameData}/main.png`}
+              src = {`${gameData.theme}/main.png`}
               alt = "mainplayer"
               className = "mainplayer"
               style={{

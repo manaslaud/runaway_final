@@ -3,13 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import './start.css'
 
 function StartPage({onStart }) {
-  const [formData, setFormData] = useState('');
+  const [formData, setFormData] = useState({theme: '', novolume: false});
   const navigate =  useNavigate();
   const prevRef = useRef(null);
   const collegesRef = useRef(null);
   const companiesRef = useRef(null);
   const programmingRef = useRef(null);
+  const [isClicked, setIsClicked] = useState(false);
 
+  const handlevolume = () => {
+    setIsClicked((prevIsClicked) => {
+      const newIsClicked = !prevIsClicked;
+      setFormData({ ...formData, novolume: newIsClicked });
+      return newIsClicked;
+    });
+  };
+  
   const handleButtonClick = (value) => {
     const imageRefs = {
       colleges: collegesRef,
@@ -26,8 +35,7 @@ function StartPage({onStart }) {
 
     image.src = `options/onclick/${value}.png`;
 
-    console.log(value, prevRef.current, collegesRef.current, companiesRef.current, programmingRef.current)
-    setFormData(value);
+    setFormData({ ...formData, theme: value });
   };
   
   const handleSubmit = (event) => {
@@ -40,6 +48,9 @@ function StartPage({onStart }) {
     <div className="Final">
       <img src="madeby.png" className="madeby" />
       <img src="name.png" className="gameName" />
+      <button onClick={handlevolume} className={`${isClicked ? 'strike-through' : ''} volume` }>
+      Sound
+     </button>
       <div className="Main">
         <div className="ButtonsContainer">
           <div className="Row">
